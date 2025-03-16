@@ -1,6 +1,6 @@
-import { useState } from "react";
+// import { useState } from "react";
 import "../components/App.css";
-import LoadMoreBtn from "../../components/LoadMoreBtn";
+// import LoadMoreBtn from "../../components/LoadMoreBtn";
 
 export default function App() {
   return <div></div>;
