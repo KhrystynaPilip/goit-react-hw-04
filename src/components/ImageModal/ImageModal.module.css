@@ -1,0 +1,62 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999999999;
+  background-color: #515151e5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
+
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+}
+
+.modalOverlayAfterOpen {
+  opacity: 1;
+}
+
+.modalOverlayBeforeClose {
+  opacity: 0;
+}
+
+.modalContent {
+  outline: transparent;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.modalImg {
+  max-width: 80vw;
+  max-height: 80vh;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.imgInfoWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: #373434aa;
+  color: #fafafa;
+
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.downloadLink {
+  transition: scale 300ms linear;
+}
+.downloadLink:hover,
+.downloadLink:focus {
+  scale: 1.1;
+}

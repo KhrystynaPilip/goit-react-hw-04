@@ -1,0 +1,7 @@
+.img {
+  height: 250px;
+  border-radius: 8px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: scale 1000ms linear;
+}
