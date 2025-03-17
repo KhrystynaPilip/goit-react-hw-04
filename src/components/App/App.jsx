@@ -2,15 +2,16 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useState, useRef } from "react";
 import { getImagesByQuery } from "../../unsplash-api";
 import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
-import SearchBar from "../SearchBar/SearchBar";
-import ImageGallery from "../ImageGallery/ImageGallery";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import Loader from "../Loader/Loader";
-import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
-import ImageModal from "../ImageModal/ImageModal";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import ImageGallery from "../../components/ImageGallery/ImageGallery";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import Loader from "../../components/Loader/Loader";
+import LoadMoreBtn from "../../components/LoadMoreBtn/LoadMoreBtn";
+import ImageModal from "../../components/ImageModal/ImageModal";
+
 import css from "./App.module.css";
-// import Modal from "react-modal";
 
 export default function App() {
   const [query, setQuery] = useState("");

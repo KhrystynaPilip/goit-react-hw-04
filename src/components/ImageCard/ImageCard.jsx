@@ -1,9 +1,9 @@
 import css from "./ImageCard.module.css";
 
-export default function ImageCard({ image: { url, description } }) {
+export default function ImageCard({ image: { urls, description } }) {
   return (
     <div>
-      <img className={css.img} src={url.small} alt={description} />
+      <img className={css.img} src={urls.small} alt={description} />
     </div>
   );
 }
