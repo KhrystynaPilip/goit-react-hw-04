@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { forwardRef } from "react";
 import ImageCard from "../ImageCard/ImageCard";
 import css from "./ImageGallery.module.css";
 

@@ -1,5 +1,5 @@
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { fetchImagesByQuery } from "../../unsplash-api";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
@@ -25,6 +25,11 @@ export default function App() {
   const galleryRef = useRef();
   const inputRef = useRef();
 
+  const handleSearchSubmit = (newQuery) => {
+    setQuery(newQuery.trim());
+    setPage(1);
+  };
+
   useEffect(() => {
     if (query === "") return;
 
@@ -34,7 +39,7 @@ export default function App() {
         setError(false);
         setLoader(true);
 
-        const { results, total, total_pages } = await getImagesByQuery(
+        const { results, total, total_pages } = await fetchImagesByQuery(
           query,
           page
         );
@@ -68,8 +73,7 @@ export default function App() {
   }, [page, query]);
 
   const handleInputChange = (e) => {
-    setQuery(e.target.value.trim());
-    setPage(1);
+    setQuery(e.target.value);
   };
 
   const loadMoreImages = async () => {
@@ -79,7 +83,10 @@ export default function App() {
       setLoadMoreBtn(false);
       setLoader(true);
 
-      const { results, total_pages } = await getImagesByQuery(query, nextPage);
+      const { results, total_pages } = await fetchImagesByQuery(
+        query,
+        nextPage
+      );
       setImages((prevImages) => [...prevImages, ...results]);
 
       setTimeout(() => {
@@ -113,7 +120,7 @@ export default function App() {
   return (
     <>
       <SearchBar
-        onSubmit={fetchImages}
+        onSubmit={handleSearchSubmit}
         value={query}
         onChange={handleInputChange}
         ref={inputRef}
