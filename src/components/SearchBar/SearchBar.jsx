@@ -3,18 +3,21 @@ import { IoSearchSharp } from "react-icons/io5";
 
 import toast from "react-hot-toast";
 import css from "./SearchBar.module.css";
+import { forwardRef } from "react";
 
-export default function SearchBar({ onSubmit, value, onChange, ref }) {
+const SearchBar = forwardRef(({ onSubmit, value, onChange }, ref) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    value === ""
-      ? toast("Please enter your request", {
-          duration: 3000,
-          icon: <AiOutlineInfoCircle size={24} />,
-        })
-      : onSubmit();
-    ref.current.blur();
+    if (value === "") {
+      toast("Please enter your request", {
+        duration: 3000,
+        icon: <AiOutlineInfoCircle size={24} />,
+      });
+    } else {
+      onSubmit(value);
+      ref.current.blur();
+    }
   };
 
   return (
@@ -36,4 +39,6 @@ export default function SearchBar({ onSubmit, value, onChange, ref }) {
       </form>
     </header>
   );
-}
+});
+
+export default SearchBar;

@@ -1,6 +1,6 @@
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useState, useRef } from "react";
-import { getImagesByQuery } from "../../unsplash-api";
+import { fetchImagesByQuery } from "../../unsplash-api";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 
@@ -25,41 +25,47 @@ export default function App() {
   const galleryRef = useRef();
   const inputRef = useRef();
 
-  const fetchImages = async () => {
-    try {
-      setImages([]);
-      setError(false);
-      setLoader(true);
+  useEffect(() => {
+    if (query === "") return;
 
-      const { results, total, total_pages } = await getImagesByQuery(
-        query,
-        page
-      );
+    const fetchImages = async () => {
+      try {
+        setImages([]);
+        setError(false);
+        setLoader(true);
 
-      if (total === 0) {
-        toast("Nothing found", {
-          duration: 3000,
-          icon: <AiOutlineInfoCircle size={24} />,
-        });
-        setQuery("");
-      } else {
-        setImages(results);
+        const { results, total, total_pages } = await getImagesByQuery(
+          query,
+          page
+        );
+
+        if (total === 0) {
+          toast("Nothing found", {
+            duration: 3000,
+            icon: <AiOutlineInfoCircle size={24} />,
+          });
+          setQuery("");
+        } else {
+          setImages(results);
+        }
+
+        if (total_pages === 1) {
+          toast("End of collection", {
+            duration: 3000,
+            icon: <AiOutlineInfoCircle size={24} />,
+          });
+        } else {
+          setLoadMoreBtn(true);
+        }
+      } catch {
+        setError(true);
+      } finally {
+        setLoader(false);
       }
+    };
 
-      if (total_pages === 1) {
-        toast("End of collection", {
-          duration: 3000,
-          icon: <AiOutlineInfoCircle size={24} />,
-        });
-      } else {
-        setLoadMoreBtn(true);
-      }
-    } catch {
-      setError(true);
-    } finally {
-      setLoader(false);
-    }
-  };
+    fetchImages();
+  }, [page, query]);
 
   const handleInputChange = (e) => {
     setQuery(e.target.value.trim());

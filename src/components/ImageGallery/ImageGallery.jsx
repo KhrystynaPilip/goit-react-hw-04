@@ -1,7 +1,8 @@
+import { useRef } from "react";
 import ImageCard from "../ImageCard/ImageCard";
 import css from "./ImageGallery.module.css";
 
-export default function ImageGallery({ items, onModal, ref }) {
+const ImageGallery = forwardRef(({ items, onModal }, ref) => {
   return (
     <ul className={css.list} ref={ref}>
       {items.map((item) => (
@@ -15,4 +16,6 @@ export default function ImageGallery({ items, onModal, ref }) {
       ))}
     </ul>
   );
-}
+});
+
+export default ImageGallery;
