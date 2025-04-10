@@ -15,6 +15,7 @@ import css from "./App.module.css";
 
 export default function App() {
   const [query, setQuery] = useState("");
+  const [prevQuery, setPrevQuery] = useState("");
   const [images, setImages] = useState([]);
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
@@ -25,19 +26,23 @@ export default function App() {
   const galleryRef = useRef();
   const inputRef = useRef();
 
-  const handleSearchSubmit = (newQuery) => {
-    setQuery(newQuery.trim());
-    setPage(1);
-  };
-
   useEffect(() => {
-    if (query === "") return;
+    if (query === "") {
+      setImages([]);
+      setLoadMoreBtn(false);
+      return;
+    }
 
     const fetchImages = async () => {
       try {
-        setImages([]);
         setError(false);
         setLoader(true);
+
+        if (query !== prevQuery) {
+          setImages([]);
+          setPage(1);
+          setPrevQuery(query);
+        }
 
         const { results, total, total_pages } = await fetchImagesByQuery(
           query,
@@ -49,9 +54,9 @@ export default function App() {
             duration: 3000,
             icon: <AiOutlineInfoCircle size={24} />,
           });
-          setQuery("");
-        } else {
-          setImages(results);
+          setImages([]);
+          setLoadMoreBtn(false);
+          return;
         }
 
         if (total_pages === 1) {
@@ -59,7 +64,10 @@ export default function App() {
             duration: 3000,
             icon: <AiOutlineInfoCircle size={24} />,
           });
+          setImages(results);
+          setLoadMoreBtn(false);
         } else {
+          setImages((prev) => [...prev, ...results]);
           setLoadMoreBtn(true);
         }
       } catch {
@@ -70,10 +78,11 @@ export default function App() {
     };
 
     fetchImages();
-  }, [page, query]);
+  }, [query, page, prevQuery]);
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
+    setPage(1);
   };
 
   const loadMoreImages = async () => {
@@ -119,12 +128,7 @@ export default function App() {
 
   return (
     <>
-      <SearchBar
-        onSubmit={handleSearchSubmit}
-        value={query}
-        onChange={handleInputChange}
-        ref={inputRef}
-      />
+      <SearchBar value={query} onChange={handleInputChange} ref={inputRef} />
 
       {error && <ErrorMessage />}
 
